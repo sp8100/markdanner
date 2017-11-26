@@ -1,0 +1,237 @@
+{% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
+{% load static wagtailuserbar %}
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>{% block title %}{% if self.seo_title %}{{ self.seo_title }}{% else %}{{ self.title }}{% endif %}{% endblock %}{% block title_suffix %}{% endblock %}</title>
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="shortcut icon" href="{%  static 'images/favicon.ico' %}">
+        {# Global stylesheets #}
+		{% load compress %}
+		{% compress css %}
+		<link rel="stylesheet" href="/static/css/bootstrap.css" type="text/css" charset="utf-8">
+		<link rel="stylesheet" href="/static/css/jquery.bxslider.css" type="text/css" charset="utf-8">
+		<style>
+			.main {
+				padding: 1em;
+			}
+			.centered {
+				align: center;
+				text-align: center;
+			}
+			.margins {
+				margin-bottom: 5vh;
+				margin-left: 5vw;
+				margin-right: 5vw;
+				background-color: white;
+			}
+		    .richtext-image.left {
+			  padding: 1em;
+  		  	  display: block;
+  		  	  max-width: 100%;
+  		  	  height: auto;
+		  	  float: left !important;
+		    }
+		    .richtext-image.right {
+			  padding: 1em;
+  		  	  display: block;
+  		  	  max-width: 100%;
+  		  	  height: auto;
+		  	  float: right !important;
+		    }
+		    .richtext-image.full-width {
+			  padding: 1em;
+		  	  display: block;
+			  margin: 0 auto;
+		  	  max-width: 100%;
+		  	  height: auto;
+		    }
+			hr {
+				background-color: #fff;
+				border-top: 2px dashed #8c8b8b;
+			}
+			h5 {
+			  font-size: 75%;
+			}
+			blockquote {
+			  font-size: 75%;
+			}
+		</style>
+		{% endcompress %}
+        {% block extra_css %}
+            {# Override this in templates to add extra stylesheets #}
+        {% endblock %}
+    </head>
+
+    <body class="{% block body_class %}template-homepage{% endblock %}">
+
+		<nav class="navbar navbar-default">
+		  <div class="container-fluid">
+		    <div class="navbar-header">
+		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+		        <span class="sr-only">Toggle navigation</span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		      </button>
+		      <a class="navbar-brand" href="/"><span style="color: #3D0000; text-shadow: -1px -1px 0 #777875, 1px -1px 0 #777875, -1px 1px 0 #777875, 1px 1px 0 #777875;">Mark</span><span style="color: #990000; text-shadow: -1px -1px 0 #777875, 1px -1px 0 #777875, -1px 1px 0 #777875, 1px 1px 0 #777875;">Danner.com</span></a>
+		    </div>
+
+		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		      <ul class="nav navbar-nav">
+		        <li><a href="/writing/">Writing</a></li>
+				<li><a href="/speaking/">Speaking</a></li>
+				<li><a href="/teaching/">Teaching</a></li>
+				<li><a href="/biography/">Biography</a></li>
+				<li><a href="/press/">Press</a></li>
+		      </ul>
+		      <form action="/search/" method="get" class="navbar-form navbar-left" role="search">
+		        <div class="form-group">
+		          <input type="text" name="query" class="form-control" placeholder="Search">
+		        </div>
+		        <button type="submit" class="btn btn-default">Search</button>
+		      </form>
+		    </div>
+		  </div>
+		</nav>
+		<div class="main margins">
+			<h1>{{ page.title }}</h1>
+			<hr>
+			<div class="row">
+				<div class="col-xs-4">
+					{% image page.related_image original class="richtext-image full-width" %}
+				</div>
+				<div class="col-xs-8">
+					{{ page.body|richtext }}
+				</div>
+			</div>
+			<hr>
+			<div class="row">
+				<div class="col-md-6">
+					<h3>
+						Featured Content:
+					</h3>
+					{% block content %}
+						{% image page.carousel_1_page_1.specific.related_image height-250 as c_1_p_1 %}
+						{% image page.carousel_1_page_2.specific.related_image height-250 as c_1_p_2 %}
+						{% image page.carousel_1_page_3.specific.related_image height-250 as c_1_p_3 %}
+						{% image page.carousel_1_page_4.specific.related_image height-250 as c_1_p_4 %}
+						<ul class="bxslider">
+							<li><a href="{{ page.carousel_1_page_1.url }}"><img src="{{ c_1_p_1.url }}" title="{{ page.carousel_1_page_1.title }}" /></a></li>
+							<li><a href="{{ page.carousel_1_page_2.url }}"><img src="{{ c_1_p_2.url }}" title="{{ page.carousel_1_page_2.title }}" /></a></li>
+							<li><a href="{{ page.carousel_1_page_3.url }}"><img src="{{ c_1_p_3.url }}" title="{{ page.carousel_1_page_3.title }}" /></a></li>
+							<li><a href="{{ page.carousel_1_page_4.url }}"><img src="{{ c_1_p_4.url }}" title="{{ page.carousel_1_page_4.title }}" /></a></li>
+						</ul>
+						{% image page.carousel_2_page_1.specific.related_image height-250 as c_2_p_1 %}
+						{% image page.carousel_2_page_2.specific.related_image height-250 as c_2_p_2 %}
+						{% image page.carousel_2_page_3.specific.related_image height-250 as c_2_p_3 %}
+						{% image page.carousel_2_page_4.specific.related_image height-250 as c_2_p_4 %}
+						<ul class="bxslider">
+							<li><a href="{{ page.carousel_2_page_1.url }}"><img src="{{ c_2_p_1.url }}" title="{{ page.carousel_2_page_1.title }}" /></a></li>
+							<li><a href="{{ page.carousel_2_page_2.url }}"><img src="{{ c_2_p_2.url }}" title="{{ page.carousel_2_page_2.title }}" /></a></li>
+							<li><a href="{{ page.carousel_2_page_3.url }}"><img src="{{ c_2_p_3.url }}" title="{{ page.carousel_2_page_3.title }}" /></a></li>
+							<li><a href="{{ page.carousel_2_page_4.url }}"><img src="{{ c_2_p_4.url }}" title="{{ page.carousel_2_page_4.title }}" /></a></li>
+						</ul>
+						{% image page.carousel_3_page_1.specific.related_image height-250 as c_3_p_1 %}
+						{% image page.carousel_3_page_2.specific.related_image height-250 as c_3_p_2 %}
+						{% image page.carousel_3_page_3.specific.related_image height-250 as c_3_p_3 %}
+						{% image page.carousel_3_page_4.specific.related_image height-250 as c_3_p_4 %}
+						<ul class="bxslider">
+							<li><a href="{{ page.carousel_3_page_1.url }}"><img src="{{ c_3_p_1.url }}" title="{{ page.carousel_3_page_1.title }}" /></a></li>
+							<li><a href="{{ page.carousel_3_page_2.url }}"><img src="{{ c_3_p_2.url }}" title="{{ page.carousel_3_page_2.title }}" /></a></li>
+							<li><a href="{{ page.carousel_3_page_3.url }}"><img src="{{ c_3_p_3.url }}" title="{{ page.carousel_3_page_3.title }}" /></a></li>
+							<li><a href="{{ page.carousel_3_page_4.url }}"><img src="{{ c_3_p_4.url }}" title="{{ page.carousel_3_page_4.title }}" /></a></li>
+						</ul>
+						{% image page.carousel_4_page_1.specific.related_image height-250 as c_4_p_1 %}
+						{% image page.carousel_4_page_2.specific.related_image height-250 as c_4_p_2 %}
+						{% image page.carousel_4_page_3.specific.related_image height-250 as c_4_p_3 %}
+						{% image page.carousel_4_page_4.specific.related_image height-250 as c_4_p_4 %}
+						<ul class="bxslider">
+							<li><a href="{{ page.carousel_4_page_1.url }}"><img src="{{ c_4_p_1.url }}" title="{{ page.carousel_4_page_1.title }}" /></a></li>
+							<li><a href="{{ page.carousel_4_page_2.url }}"><img src="{{ c_4_p_2.url }}" title="{{ page.carousel_4_page_2.title }}" /></a></li>
+							<li><a href="{{ page.carousel_4_page_3.url }}"><img src="{{ c_4_p_3.url }}" title="{{ page.carousel_4_page_3.title }}" /></a></li>
+							<li><a href="{{ page.carousel_4_page_4.url }}"><img src="{{ c_4_p_4.url }}" title="{{ page.carousel_4_page_4.title }}" /></a></li>
+						</ul>
+						{% image page.carousel_5_page_1.specific.related_image height-250 as c_5_p_1 %}
+						{% image page.carousel_5_page_2.specific.related_image height-250 as c_5_p_2 %}
+						{% image page.carousel_5_page_3.specific.related_image height-250 as c_5_p_3 %}
+						{% image page.carousel_5_page_4.specific.related_image height-250 as c_5_p_4 %}
+						<ul class="bxslider">
+							<li><a href="{{ page.carousel_5_page_1.url }}"><img src="{{ c_5_p_1.url }}" title="{{ page.carousel_5_page_1.title }}" /></a></li>
+							<li><a href="{{ page.carousel_5_page_2.url }}"><img src="{{ c_5_p_2.url }}" title="{{ page.carousel_5_page_2.title }}" /></a></li>
+							<li><a href="{{ page.carousel_5_page_3.url }}"><img src="{{ c_5_p_3.url }}" title="{{ page.carousel_5_page_3.title }}" /></a></li>
+							<li><a href="{{ page.carousel_5_page_4.url }}"><img src="{{ c_5_p_4.url }}" title="{{ page.carousel_5_page_4.title }}" /></a></li>
+						</ul>
+					{% endblock %}
+				</div>
+				<div class="col-md-6">
+					<h3>
+						Recently Added:
+					</h3>
+					{% for page in self.get_children.specific %}
+						{% for page in page.get_children.specific %}
+							{% if page.date %}
+								<div class="main">
+									{% image page.related_image width-200 class="img-responsive left" %}
+									<a href="{{ page.url }}"><h3>{{ page.title }}</h3></a>
+									{% if '/biography/' in page.url %}
+										<p>Biography Page</p>
+									{% elif '/writing/' in page.url %}
+										<p>Writing Page</p>
+									{% elif '/speaking/' in page.url %}
+										<p>Speaking Page</p>
+									{% elif '/teaching/' in page.url %}
+										<p>Teaching Page</p>
+									{% elif '/press/' in page.url %}
+										<p>Press Page</p>
+									{% endif %}
+									<h5>Excerpt:</h5>
+									<blockquote>{{ page.body|richtext|truncatewords_html:50|striptags }}</blockquote>
+									{% if page.relevant_link %}
+										<h5>From:</h5>
+										<h5>{{ page.relevant_link|richtext }}</h5>
+									{% endif %}
+									<h5>Date of Publication:</h5>
+									<h5><em>{{ page.date|date:"M d, Y" }}</em></h5>
+									<hr>
+								</div>
+							{% endif %}
+						{% endfor %}
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+		{% wagtailuserbar %}
+
+        {# Global javascript #}
+		<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+		{% load compress %}
+
+		{% compress js %}
+		<script src="/static/js/bootstrap.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/static/js/jquery.bxslider.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			$('.bxslider').bxSlider({
+				auto: true,
+				autoControls: true,
+				captions: true,
+				speed: 1000,
+				infiniteLoop: true,
+				pager: false
+			});
+		</script>
+		{% endcompress %}
+		{% block extra_js %}
+            {# Override this in templates to add extra javascript #}
+        {% endblock %}
+    </body>
+</html>
